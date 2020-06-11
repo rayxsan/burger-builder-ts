@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Route, Switch, withRouter, Redirect } from "react-router-dom";
-import { connect, ConnectedProps } from "react-redux";
+import { connect } from "react-redux";
 import { Dispatch, AnyAction } from "redux";
 import asyncComponent from "./hoc/asyncComponent/asyncComponent";
 import { AppState } from "./index";

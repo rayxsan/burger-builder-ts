@@ -33,8 +33,8 @@ const rootReducer = combineReducers<AppState>({
 
 const store = createStore(
   rootReducer,
-  // composeEnhancers(applyMiddleware(thunk))
-  applyMiddleware(thunk)
+  composeEnhancers(applyMiddleware(thunk))
+  //applyMiddleware(thunk)
 );
 
 ReactDOM.render(
