@@ -22,3 +22,34 @@ export const AUTH_FAIL = "AUTH_FAIL";
 export const AUTH_LOGOUT = "AUTH_LOGOUT";
 
 export const SET_AUTH_REDIRECT_PATH = "SET_AUTH_REDIRECT_PATH";
+
+export interface AuthStartAction {
+  type: typeof AUTH_START;
+}
+
+export interface AuthSuccessAction {
+  type: typeof AUTH_SUCCESS;
+  idToken: string | null;
+  userId: string | null;
+}
+
+export interface AuthFailAction {
+  type: typeof AUTH_FAIL;
+  error: string | null;
+}
+
+export interface AuthLogoutAction {
+  type: typeof AUTH_LOGOUT;
+}
+
+export interface SetAuthRedirectPathAction {
+  type: typeof SET_AUTH_REDIRECT_PATH;
+  path: string;
+}
+
+export type AuthAction =
+  | AuthStartAction
+  | AuthSuccessAction
+  | AuthFailAction
+  | AuthLogoutAction
+  | SetAuthRedirectPathAction;

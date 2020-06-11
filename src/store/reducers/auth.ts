@@ -17,11 +17,14 @@ const initialState: AuthState = {
   authRedirectPath: "/",
 };
 
-const authStart = (state: AuthState, action: any) => {
+const authStart = (state: AuthState, action: actionTypes.AuthStartAction) => {
   return updateObject(state, { error: null, loading: true });
 };
 
-const authSuccess = (state: AuthState, action: any) => {
+const authSuccess = (
+  state: AuthState,
+  action: actionTypes.AuthSuccessAction
+) => {
   return updateObject(state, {
     token: action.idToken,
     userId: action.userId,
@@ -30,22 +33,25 @@ const authSuccess = (state: AuthState, action: any) => {
   });
 };
 
-const authFail = (state: AuthState, action: any) => {
+const authFail = (state: AuthState, action: actionTypes.AuthFailAction) => {
   return updateObject(state, {
     error: action.error,
     loading: false,
   });
 };
 
-const authLogout = (state: AuthState, action: any) => {
+const authLogout = (state: AuthState, action: actionTypes.AuthLogoutAction) => {
   return updateObject(state, { token: null, userId: null });
 };
 
-const setAuthRedirectPath = (state: AuthState, action: any) => {
+const setAuthRedirectPath = (
+  state: AuthState,
+  action: actionTypes.SetAuthRedirectPathAction
+) => {
   return updateObject(state, { authRedirectPath: action.path });
 };
 
-const reducer = (state = initialState, action: any) => {
+const reducer = (state = initialState, action: actionTypes.AuthAction) => {
   switch (action.type) {
     case actionTypes.AUTH_START:
       return authStart(state, action);

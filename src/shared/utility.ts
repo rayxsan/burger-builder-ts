@@ -1,11 +1,11 @@
-export const updateObject = (oldObject, updatedProperties) => {
+export const updateObject = <T, U>(oldObject: T, updatedProperties: U) => {
   return {
     ...oldObject,
     ...updatedProperties,
   };
 };
 
-export const checkValidity = (value, rules) => {
+export const checkValidity = (value: any, rules: any): boolean => {
   let isValid = true;
   if (!rules) {
     return true;
