@@ -24,7 +24,7 @@ const INGREDIENT_PRICES: { [key: string]: number } = {
 
 const addIngredient = (
   state: BurgerBuilderState,
-  action: { [key: string]: number }
+  action: actionTypes.AddIngredientAction
 ) => {
   const updatedIngredient = {
     [action.ingredientName]: state.ingredients[action.ingredientName] + 1,
@@ -38,7 +38,10 @@ const addIngredient = (
   return updateObject(state, updatedState);
 };
 
-const removeIngredient = (state: BurgerBuilderState, action: any) => {
+const removeIngredient = (
+  state: BurgerBuilderState,
+  action: actionTypes.RemoveIngredientAction
+) => {
   const updatedIng = {
     [action.ingredientName]: state.ingredients[action.ingredientName] - 1,
   };
@@ -51,7 +54,10 @@ const removeIngredient = (state: BurgerBuilderState, action: any) => {
   return updateObject(state, updatedSt);
 };
 
-const setIngredients = (state: BurgerBuilderState, action: any) => {
+const setIngredients = (
+  state: BurgerBuilderState,
+  action: actionTypes.SetIngredientsAction
+) => {
   return updateObject(state, {
     ingredients: {
       salad: action.ingredients.salad,
@@ -65,11 +71,17 @@ const setIngredients = (state: BurgerBuilderState, action: any) => {
   });
 };
 
-const fetchIngredientsFailed = (state: BurgerBuilderState, action: any) => {
+const fetchIngredientsFailed = (
+  state: BurgerBuilderState,
+  action: actionTypes.FetchIngredientsFailedAction
+) => {
   return updateObject(state, { error: true });
 };
 
-const reducer = (state = initialState, action: any) => {
+const reducer = (
+  state = initialState,
+  action: actionTypes.IngredientAction
+) => {
   switch (action.type) {
     case actionTypes.ADD_INGREDIENT:
       return addIngredient(state, action);
