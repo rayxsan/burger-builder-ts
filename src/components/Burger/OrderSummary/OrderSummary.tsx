@@ -1,16 +1,20 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 
 import Aux from "../../../hoc/Aux/Aux";
 import Button from "../../UI/Button/Button";
 
-interface orderSummaryProps {
+interface Props {
   ingredients: { [key: string]: number };
   price: number;
-  purchaseCancelled: boolean;
-  purchaseContinued: any;
+  purchaseCancelled: (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
+  purchaseContinued: (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
 }
 
-const orderSummary = (props: orderSummaryProps) => {
+const OrderSummary: FunctionComponent<Props> = (props) => {
   const ingredientSummary = Object.keys(props.ingredients).map((igKey) => {
     return (
       <li key={igKey}>
@@ -39,4 +43,4 @@ const orderSummary = (props: orderSummaryProps) => {
   );
 };
 
-export default orderSummary;
+export default OrderSummary;

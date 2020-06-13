@@ -1,8 +1,13 @@
-import React from "react";
-
+import React, { FunctionComponent } from "react";
 import classes from "./Button.module.css";
 
-const button = (props) => (
+interface Props {
+  disabled?: boolean;
+  btnType: string;
+  clicked: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+}
+
+const button: FunctionComponent<Props> = (props) => (
   <button
     disabled={props.disabled}
     className={[classes.Button, classes[props.btnType]].join(" ")}

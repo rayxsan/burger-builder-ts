@@ -4,8 +4,16 @@ import classes from "./Modal.module.css";
 import Aux from "../../../hoc/Aux/Aux";
 import Backdrop from "../Backdrop/Backdrop";
 
-class Modal extends Component {
-  shouldComponentUpdate(nextProps, nextState) {
+interface Props {
+  show: boolean;
+  modalClosed: () => void;
+  children?: React.ReactNode;
+}
+
+interface State {}
+
+class Modal extends Component<Props, State> {
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
     return (
       nextProps.show !== this.props.show ||
       nextProps.children !== this.props.children
@@ -13,17 +21,18 @@ class Modal extends Component {
   }
 
   render() {
+    const { show, modalClosed, children } = this.props;
     return (
       <Aux>
-        <Backdrop show={this.props.show} clicked={this.props.modalClosed} />
+        <Backdrop show={show} clicked={modalClosed} />
         <div
           className={classes.Modal}
           style={{
-            transform: this.props.show ? "translateY(0)" : "translateY(-100vh)",
-            opacity: this.props.show ? "1" : "0",
+            transform: show ? "translateY(0)" : "translateY(-100vh)",
+            opacity: show ? "1" : "0",
           }}
         >
-          {this.props.children}
+          {children}
         </div>
       </Aux>
     );
