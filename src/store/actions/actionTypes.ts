@@ -1,4 +1,4 @@
-import { orderData, orders } from "../../shared/types";
+import { OrderForm, Order } from "../../shared/types";
 
 // Burger Builder action types
 export const ADD_INGREDIENT = "ADD_INGREDIENT";
@@ -40,7 +40,7 @@ export const PURCHASE_BURGER_START = "PURCHASE_BURGER_START";
 export interface PurchaseBurgerSuccessAction {
   type: typeof PURCHASE_BURGER_SUCCESS;
   orderId: string;
-  orderData: orderData;
+  orderData: OrderForm;
 }
 
 export interface PurchaseBurgerFailAction {
@@ -70,7 +70,7 @@ export interface FetchOrdersStartAction {
 
 export interface FetchOrdersSuccessAction {
   type: typeof FETCH_ORDERS_SUCCESS;
-  orders: orders;
+  orders: Array<Order>;
 }
 
 export interface FetchOrdersFailAction {

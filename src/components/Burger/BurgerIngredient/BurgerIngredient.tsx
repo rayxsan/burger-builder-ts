@@ -1,12 +1,10 @@
-import React, { Component } from "react";
-//import PropTypes from "prop-types";
-
+import React from "react";
 import classes from "./BurgerIngredient.module.css";
 
-interface burgerIngredientProps {
+interface Props {
   type: string;
 }
-const burgerIngredient = (props: burgerIngredientProps) => {
+const BurgerIngredient = (props: Props) => {
   let ingredient: JSX.Element | null;
 
   switch (props.type) {
@@ -40,4 +38,4 @@ const burgerIngredient = (props: burgerIngredientProps) => {
   return ingredient;
 };
 
-export default burgerIngredient;
+export default BurgerIngredient;

@@ -1,4 +1,4 @@
-export interface orderData {
+export interface OrderData {
   country: string;
   deliveryMethod: string;
   name: string;
@@ -6,11 +6,15 @@ export interface orderData {
   zipCode: string;
 }
 
-export interface orders {
-  archive: boolean;
+// This types encapsulates the data needed to create a new order
+export interface OrderForm {
   ingredients: { [key: string]: number };
-  orderData: orderData;
   price: number;
+  orderData: OrderData;
   userId: string;
+  version: number;
+  archive: boolean;
 }
-[];
+
+// This is how Order are store in the DB
+export type Order = OrderForm & { id: string };

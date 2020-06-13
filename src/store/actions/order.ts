@@ -1,11 +1,11 @@
 import * as actionTypes from "./actionTypes";
 import axios from "../../axios-orders";
-import { orderData, orders } from "../../shared/types";
-import { Dispatch, AnyAction } from "redux";
+import { OrderForm, Order } from "../../shared/types";
+import { Dispatch } from "redux";
 
 export const purchaseBurgerSuccess = (
   id: string,
-  orderData: orderData
+  orderData: OrderForm
 ): actionTypes.PurchaseBurgerSuccessAction => {
   return {
     type: actionTypes.PURCHASE_BURGER_SUCCESS,
@@ -29,7 +29,7 @@ export const purchaseBurgerStart = (): actionTypes.PurchaseBurgerStartAction => 
   };
 };
 
-export const purchaseBurger = (orderData: orderData, token: string | null) => {
+export const purchaseBurger = (orderData: OrderForm, token: string | null) => {
   return (dispatch: Dispatch) => {
     dispatch(purchaseBurgerStart());
     axios
@@ -89,11 +89,11 @@ export const purchaseInit = () => {
 };
 
 export const fetchOrdersSuccess = (
-  orders: orders
+  orders: Array<Order>
 ): actionTypes.FetchOrdersSuccessAction => {
   return {
     type: actionTypes.FETCH_ORDERS_SUCCESS,
-    orders: orders,
+    orders,
   };
 };
 
@@ -120,14 +120,14 @@ export const fetchOrders = (token: string | null, userId: string) => {
     axios
       .get("/orders.json" + queryParams)
       .then((res) => {
-        const fetchedOrders: any = [];
+        const orders: Array<Order> = [];
         for (let key in res.data) {
-          fetchedOrders.push({
+          orders.push({
             ...res.data[key],
             id: key,
           });
         }
-        dispatch(fetchOrdersSuccess(fetchedOrders));
+        dispatch(fetchOrdersSuccess(orders));
       })
       .catch((err) => {
         dispatch(fetchOrdersFail(err));

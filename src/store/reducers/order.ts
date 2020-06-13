@@ -1,8 +1,9 @@
 import * as actionTypes from "../actions/actionTypes";
 import { updateObject } from "../../shared/utility";
+import { Order } from "../../shared/types";
 
 export interface OrderState {
-  orders: Array<any>;
+  orders: Array<Order>;
   loading: boolean;
   purchased: boolean;
 }
@@ -31,7 +32,9 @@ const purchaseBurgerSuccess = (
   state: OrderState,
   action: actionTypes.PurchaseBurgerSuccessAction
 ) => {
-  const newOrder = updateObject(action.orderData, { id: action.orderId });
+  const newOrder: any = updateObject(action.orderData, {
+    id: action.orderId,
+  });
   return updateObject(state, {
     loading: false,
     purchased: true,

@@ -1,6 +1,6 @@
 import * as actionTypes from "./actionTypes";
 import axios from "../../axios-orders";
-import { Dispatch, AnyAction } from "redux";
+import { Dispatch } from "redux";
 
 export const addIngredient = (
   name: string

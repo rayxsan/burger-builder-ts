@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import { Dispatch, AnyAction } from "redux";
+import { Dispatch } from "redux";
 
 export const authStart = (): actionTypes.AuthStartAction => {
   return {
@@ -44,7 +44,7 @@ export const checkAuthTimeout = (expirationTime: number) => {
 };
 
 export const auth = (email: string, password: string, isSignup: boolean) => {
-  return (dispatch: any) => {
+  return (dispatch: Dispatch<any>) => {
     dispatch(authStart());
     const authData = {
       email: email,
