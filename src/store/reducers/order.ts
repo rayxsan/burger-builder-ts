@@ -13,15 +13,24 @@ const initialState: OrderState = {
   purchased: false,
 };
 
-const purchaseInit = (state: OrderState, action: any) => {
+const purchaseInit = (
+  state: OrderState,
+  action: actionTypes.PurchaseBurgerAction
+) => {
   return updateObject(state, { purchased: false });
 };
 
-const purchaseBurgerStart = (state: OrderState, action: any) => {
+const purchaseBurgerStart = (
+  state: OrderState,
+  action: actionTypes.PurchaseBurgerAction
+) => {
   return updateObject(state, { loading: true });
 };
 
-const purchaseBurgerSuccess = (state: OrderState, action: any) => {
+const purchaseBurgerSuccess = (
+  state: OrderState,
+  action: actionTypes.PurchaseBurgerSuccessAction
+) => {
   const newOrder = updateObject(action.orderData, { id: action.orderId });
   return updateObject(state, {
     loading: false,
@@ -30,34 +39,55 @@ const purchaseBurgerSuccess = (state: OrderState, action: any) => {
   });
 };
 
-const purchaseBurgerFail = (state: OrderState, action: any) => {
+const purchaseBurgerFail = (
+  state: OrderState,
+  action: actionTypes.PurchaseBurgerAction
+) => {
   return updateObject(state, { loading: false });
 };
 
-const fetchOrdersStart = (state: OrderState, action: any) => {
+const fetchOrdersStart = (
+  state: OrderState,
+  action: actionTypes.PurchaseBurgerAction
+) => {
   return updateObject(state, { loading: true });
 };
 
-const fetchOrdersSuccess = (state: OrderState, action: any) => {
+const fetchOrdersSuccess = (
+  state: OrderState,
+  action: actionTypes.FetchOrdersSuccessAction
+) => {
   return updateObject(state, {
     orders: action.orders,
     loading: false,
   });
 };
 
-const fetchOrdersFail = (state: OrderState, action: any) => {
+const fetchOrdersFail = (
+  state: OrderState,
+  action: actionTypes.PurchaseBurgerAction
+) => {
   return updateObject(state, { loading: false });
 };
 
-const archiveOrderFail = (state: OrderState, action: any) => {
+const archiveOrderFail = (
+  state: OrderState,
+  action: actionTypes.PurchaseBurgerAction
+) => {
   return updateObject(state, { loading: false });
 };
 
-const archiveOrderStart = (state: OrderState, action: any) => {
+const archiveOrderStart = (
+  state: OrderState,
+  action: actionTypes.PurchaseBurgerAction
+) => {
   return updateObject(state, { loading: true });
 };
 
-const archiveOrderSuccess = (state: OrderState, action: any) => {
+const archiveOrderSuccess = (
+  state: OrderState,
+  action: actionTypes.ArchiveOrderSuccessAction
+) => {
   return updateObject(state, {
     orders: state.orders.map((order) => {
       if (order.id === action.orderId) {
@@ -69,7 +99,10 @@ const archiveOrderSuccess = (state: OrderState, action: any) => {
   });
 };
 
-const reducer = (state = initialState, action: any) => {
+const reducer = (
+  state = initialState,
+  action: actionTypes.PurchaseBurgerAction
+) => {
   switch (action.type) {
     case actionTypes.PURCHASE_INIT:
       return purchaseInit(state, action);
