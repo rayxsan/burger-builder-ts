@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
+import { Dispatch, AnyAction } from "redux";
 
 export const authStart = (): actionTypes.AuthStartAction => {
   return {
@@ -35,7 +36,7 @@ export const logout = (): actionTypes.AuthLogoutAction => {
 };
 
 export const checkAuthTimeout = (expirationTime: number) => {
-  return (dispatch: any) => {
+  return (dispatch: Dispatch) => {
     setTimeout(() => {
       dispatch(logout());
     }, expirationTime * 1000);

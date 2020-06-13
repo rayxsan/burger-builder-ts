@@ -10,7 +10,17 @@ const controls = [
   { label: "Meat", type: "meat" },
 ];
 
-const buildControls = (props) => (
+interface BuildControlsProps {
+  price: number;
+  ingredientAdded: any;
+  ingredientRemoved: any;
+  disabled: any;
+  purchasable: boolean;
+  ordered: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  isAuth: boolean;
+}
+
+const buildControls = (props: BuildControlsProps) => (
   <div className={classes.BuildControls}>
     <p>
       Current Price: <strong>{props.price.toFixed(2)}</strong>

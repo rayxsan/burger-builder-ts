@@ -1,4 +1,4 @@
-import { orderData } from "../../shared/types";
+import { orderData, orders } from "../../shared/types";
 
 // Burger Builder action types
 export const ADD_INGREDIENT = "ADD_INGREDIENT";
@@ -70,7 +70,7 @@ export interface FetchOrdersStartAction {
 
 export interface FetchOrdersSuccessAction {
   type: typeof FETCH_ORDERS_SUCCESS;
-  orders: any;
+  orders: orders;
 }
 
 export interface FetchOrdersFailAction {

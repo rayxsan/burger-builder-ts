@@ -1,6 +1,7 @@
 import * as actionTypes from "./actionTypes";
 import axios from "../../axios-orders";
 import { orderData, orders } from "../../shared/types";
+import { Dispatch, AnyAction } from "redux";
 
 export const purchaseBurgerSuccess = (
   id: string,
@@ -29,7 +30,7 @@ export const purchaseBurgerStart = (): actionTypes.PurchaseBurgerStartAction => 
 };
 
 export const purchaseBurger = (orderData: orderData, token: string | null) => {
-  return (dispatch: any) => {
+  return (dispatch: Dispatch) => {
     dispatch(purchaseBurgerStart());
     axios
       .post("/orders.json?auth=" + token, orderData)
@@ -67,7 +68,7 @@ export const archiveOrderStart = (): actionTypes.ArchiveOrderStartAction => {
 };
 
 export const archiveOrder = (orderId: string, token: string | null) => {
-  return (dispatch: any) => {
+  return (dispatch: Dispatch) => {
     dispatch(archiveOrderStart());
     const queryParams = "?auth=" + token;
     axios
@@ -88,7 +89,7 @@ export const purchaseInit = () => {
 };
 
 export const fetchOrdersSuccess = (
-  orders: any
+  orders: orders
 ): actionTypes.FetchOrdersSuccessAction => {
   return {
     type: actionTypes.FETCH_ORDERS_SUCCESS,
@@ -112,14 +113,14 @@ export const fetchOrdersStart = (): actionTypes.FetchOrdersStartAction => {
 };
 
 export const fetchOrders = (token: string | null, userId: string) => {
-  return (dispatch: any) => {
+  return (dispatch: Dispatch) => {
     dispatch(fetchOrdersStart());
     const queryParams =
       "?auth=" + token + '&orderBy="userId"&equalTo="' + userId + '"';
     axios
       .get("/orders.json" + queryParams)
       .then((res) => {
-        const fetchedOrders = [];
+        const fetchedOrders: any = [];
         for (let key in res.data) {
           fetchedOrders.push({
             ...res.data[key],

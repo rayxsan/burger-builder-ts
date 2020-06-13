@@ -2,7 +2,14 @@ import React from "react";
 
 import classes from "./BuildControl.module.css";
 
-const buildControl = (props) => (
+interface buildControlProps {
+  label: string;
+  removed: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  disabled: boolean;
+  added: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+}
+
+const buildControl = (props: buildControlProps) => (
   <div className={classes.BuildControl}>
     <div className={classes.Label}>{props.label}</div>
     <button
