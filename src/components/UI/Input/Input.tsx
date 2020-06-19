@@ -9,6 +9,10 @@ interface Props {
   elementConfig: {
     type: string;
     placeholder: string;
+    options: [
+      { value: "fastest"; displayValue: "Fastest" },
+      { value: "cheapest"; displayValue: "Cheapest" }
+    ];
   };
   elementType: string;
   value: number;
@@ -58,7 +62,7 @@ const input: FunctionComponent<Props> = (props) => {
           value={props.value}
           onChange={props.changed}
         >
-          {props.elementConfig.options.map((option: any) => (
+          {props.elementConfig.options.map((option) => (
             <option key={option.value} value={option.value}>
               {option.displayValue}
             </option>
