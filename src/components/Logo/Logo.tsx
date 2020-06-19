@@ -4,7 +4,7 @@ import burgerLogo from "../../assets/images/burger-logo.png";
 import classes from "./Logo.module.css";
 
 interface logoProps {
-  height: number;
+  height?: number;
 }
 const logo = (props: logoProps) => (
   <div className={classes.Logo} style={{ height: props.height }}>

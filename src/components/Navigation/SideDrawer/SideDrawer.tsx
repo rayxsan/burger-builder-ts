@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 
 import Logo from "../../Logo/Logo";
 import NavigationItems from "../NavigationItems/NavigationItems";
@@ -6,7 +6,13 @@ import classes from "./SideDrawer.module.css";
 import Backdrop from "../../UI/Backdrop/Backdrop";
 import Aux from "../../../hoc/Aux/Aux";
 
-const sideDrawer = (props) => {
+interface Props {
+  open: boolean;
+  isAuth: boolean;
+  closed: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void)
+}
+
+const sideDrawer: FunctionComponent<Props> = (props) => {
   let attachedClasses = [classes.SideDrawer, classes.Close];
   if (props.open) {
     attachedClasses = [classes.SideDrawer, classes.Open];
