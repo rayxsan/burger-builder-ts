@@ -1,8 +1,22 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 
 import classes from "./Input.module.css";
 
-const input = (props) => {
+interface Props {
+  invalid: boolean;
+  shouldValidate: boolean;
+  touched: boolean;
+  elementConfig: {
+    type: string;
+    placeholder: string;
+  };
+  elementType: string;
+  value: number;
+  changed: (event: React.ChangeEvent<any>) => void;
+  label: string;
+}
+
+const input: FunctionComponent<Props> = (props) => {
   let inputElement = null;
   const inputClasses = [classes.InputElement];
   let validationError = null;
@@ -44,7 +58,7 @@ const input = (props) => {
           value={props.value}
           onChange={props.changed}
         >
-          {props.elementConfig.options.map((option) => (
+          {props.elementConfig.options.map((option: any) => (
             <option key={option.value} value={option.value}>
               {option.displayValue}
             </option>
