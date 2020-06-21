@@ -9,7 +9,7 @@ import Aux from "../../../hoc/Aux/Aux";
 interface Props {
   open: boolean;
   isAuth: boolean;
-  closed: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void)
+  closed: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
 const sideDrawer: FunctionComponent<Props> = (props) => {

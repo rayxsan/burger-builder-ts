@@ -3,7 +3,7 @@ import React, { FunctionComponent } from "react";
 import classes from "./DrawerToggle.module.css";
 
 interface Props {
-  clicked: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void)
+  clicked: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
 const drawerToggle: FunctionComponent<Props> = (props) => (
