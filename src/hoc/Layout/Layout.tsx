@@ -4,8 +4,19 @@ import Aux from "../Aux/Aux";
 import classes from "./Layout.module.css";
 import Toolbar from "../../components/Navigation/Toolbar/Toolbar";
 import SideDrawer from "../../components/Navigation/SideDrawer/SideDrawer";
+import { AppState } from "../../store";
 
-class Layout extends Component {
+interface StateProps {
+  isAuthenticated: boolean;
+}
+
+type Props = StateProps;
+
+interface State {
+  showSideDrawer: boolean;
+}
+
+class Layout extends Component<Props, State> {
   state = {
     showSideDrawer: false,
   };
@@ -38,7 +49,7 @@ class Layout extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: AppState) => {
   return {
     isAuthenticated: state.auth.token !== null,
   };

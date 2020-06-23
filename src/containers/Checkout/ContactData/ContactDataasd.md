@@ -1,17 +1,17 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { AppState } from "../../../index";
-import { AnyAction, Dispatch } from "redux";
+// import React, { Component } from "react";
+// import { connect } from "react-redux";
+// import { AppState } from "../../../index";
+// import { AnyAction, Dispatch } from "redux";
 
-import Button from "../../../components/UI/Button/Button";
-import Spinner from "../../../components/UI/Spinner/Spinner";
-import classes from "./ContactData.css";
-import axios from "../../../axios-orders";
-import Input from "../../../components/UI/Input/Input";
-import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
-import * as actions from "../../../store/actions/index";
-import { updateObject, checkValidity } from "../../../shared/utility";
-import { VERSION } from "../../../version";
+// import Button from "../../../components/UI/Button/Button";
+// import Spinner from "../../../components/UI/Spinner/Spinner";
+// import classes from "./ContactData.css";
+// import axios from "../../../axios-orders";
+// import Input from "../../../components/UI/Input/Input";
+// import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
+// import * as actions from "../../../store/actions/index";
+// import { updateObject, checkValidity } from "../../../shared/utility";
+// import { VERSION } from "../../../version";
 
 interface OrderForm {
   name: {

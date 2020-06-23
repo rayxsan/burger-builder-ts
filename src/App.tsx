@@ -62,9 +62,10 @@ class App extends Component<Props, State> {
     }
 
     return (
-      <div>
-        <Layout>{routes}</Layout>
-      </div>
+      <React.Fragment>
+        <Layout />
+        {routes}
+      </React.Fragment>
     );
   }
 }

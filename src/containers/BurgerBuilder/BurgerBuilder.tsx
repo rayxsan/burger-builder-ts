@@ -9,10 +9,37 @@ import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import axios from "../../axios-orders";
+import { Dispatch, AnyAction } from "redux";
+import { AppState } from "../../store";
 
 import * as actions from "../../store/actions/index";
 
-export class BurgerBuilder extends Component {
+interface OwnProps {
+  ings: {
+    [key: string]: number;
+  };
+  price: number;
+  history: any;
+  error: boolean;
+  onIngredientAdded: boolean;
+  onIngredientRemoved: boolean;
+}
+interface StateProps {
+  isAuthenticated: boolean;
+}
+interface DispatchProps {
+  onInitIngredients: () => AnyAction;
+  onSetAuthRedirectPath: (path: string) => AnyAction;
+  onInitPurchase: () => AnyAction;
+}
+
+type Props = OwnProps & StateProps & DispatchProps;
+
+interface State {
+  purchasing: boolean;
+}
+
+export class BurgerBuilder extends Component<Props, State> {
   state = {
     purchasing: false,
   };
@@ -21,7 +48,7 @@ export class BurgerBuilder extends Component {
     this.props.onInitIngredients();
   }
 
-  updatePurchaseState(ingredients) {
+  updatePurchaseState(ingredients: { [key: string]: number }) {
     const sum = Object.keys(ingredients)
       .map((igKey) => {
         return ingredients[igKey];
@@ -55,8 +82,10 @@ export class BurgerBuilder extends Component {
     const disabledInfo = {
       ...this.props.ings,
     };
+    let isDisabled = true;
+
     for (let key in disabledInfo) {
-      disabledInfo[key] = disabledInfo[key] <= 0;
+      isDisabled = disabledInfo[key] <= 0;
     }
     let orderSummary = null;
     let burger = this.props.error ? (
@@ -72,7 +101,7 @@ export class BurgerBuilder extends Component {
           <BuildControls
             ingredientAdded={this.props.onIngredientAdded}
             ingredientRemoved={this.props.onIngredientRemoved}
-            disabled={disabledInfo}
+            disabled={isDisabled}
             purchasable={this.updatePurchaseState(this.props.ings)}
             ordered={this.purchaseHandler}
             isAuth={this.props.isAuthenticated}
@@ -105,7 +134,7 @@ export class BurgerBuilder extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: AppState) => {
   return {
     ings: state.burgerBuilder.ingredients,
     price: state.burgerBuilder.totalPrice,
@@ -114,14 +143,15 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
   return {
-    onIngredientAdded: (ingName) => dispatch(actions.addIngredient(ingName)),
-    onIngredientRemoved: (ingName) =>
+    onIngredientAdded: (ingName: string) =>
+      dispatch(actions.addIngredient(ingName)),
+    onIngredientRemoved: (ingName: string) =>
       dispatch(actions.removeIngredient(ingName)),
-    onInitIngredients: () => dispatch(actions.initIngredients()),
+    onInitIngredients: () => dispatch<any>(actions.initIngredients()),
     onInitPurchase: () => dispatch(actions.purchaseInit()),
-    onSetAuthRedirectPath: (path) =>
+    onSetAuthRedirectPath: (path: string) =>
       dispatch(actions.setAuthRedirectPath(path)),
   };
 };
