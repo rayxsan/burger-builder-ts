@@ -4,7 +4,7 @@ import classes from "./Button.module.css";
 interface Props {
   disabled?: boolean;
   btnType: string;
-  clicked: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  clicked?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 const button: FunctionComponent<Props> = (props) => (

@@ -17,7 +17,7 @@ interface Props {
   elementType: string;
   value: number;
   changed: (event: React.ChangeEvent<any>) => void;
-  label: string;
+  label?: string;
 }
 
 const input: FunctionComponent<Props> = (props) => {

@@ -8,8 +8,54 @@ import classes from "./Auth.module.css";
 import * as actions from "../../store/actions/index";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import { updateObject, checkValidity } from "../../shared/utility";
+import { Dispatch, AnyAction } from "redux";
+import { AppState } from "../../store";
 
-class Auth extends Component {
+interface OwnProps {
+  buildingBurger: React.ReactNode;
+  authRedirectPath: React.ReactNode;
+}
+interface StateProps {}
+interface DispatchProps {
+  onAuth: (email: string, password: string, isSignup: boolean) => AnyAction;
+  onSetAuthRedirectPath: () => AnyAction;
+}
+type Props = OwnProps & StateProps & DispatchProps;
+interface State {
+  controls: {
+    email: {
+      elementType: string;
+      elementConfig: {
+        type: string;
+        placeholder: string;
+      };
+      value: string;
+      validation: {
+        required: boolean;
+        isEmail: boolean;
+      };
+      valid: boolean;
+      touched: boolean;
+    };
+    password: {
+      elementType: string;
+      elementConfig: {
+        type: string;
+        placeholder: string;
+      };
+      value: string;
+      validation: {
+        required: boolean;
+        minLength: number;
+      };
+      valid: boolean;
+      touched: boolean;
+    };
+  };
+  isSignup: boolean;
+}
+
+class Auth extends Component<Props, State> {
   state = {
     controls: {
       email: {
@@ -132,7 +178,7 @@ class Auth extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: AppState) => {
   return {
     loading: state.auth.loading,
     error: state.auth.error,
@@ -142,10 +188,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
   return {
-    onAuth: (email, password, isSignup) =>
-      dispatch(actions.auth(email, password, isSignup)),
+    onAuth: (email: string, password: string, isSignup: boolean) =>
+      dispatch<any>(actions.auth(email, password, isSignup)),
     onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath("/")),
   };
 };

@@ -1,8 +1,18 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 
 import classes from "./Order.module.css";
 
-const order = (props) => {
+interface Props {
+  ingredients: {
+    [key: string]: number;
+  };
+  archive: boolean;
+  price: string;
+  archiveOrder: (event: React.MouseEvent<HTMLInputElement, MouseEvent>) => void;
+  onClick?: (event: React.MouseEvent<HTMLInputElement, MouseEvent>) => void;
+}
+
+const order: FunctionComponent<Props> = (props) => {
   const ingredients = [];
 
   for (let ingredientName in props.ingredients) {

@@ -13,8 +13,6 @@ type Props = DispatchProps;
 interface State {}
 
 class Logout extends Component<Props, State> {
-  state = {};
-
   componentDidMount() {
     this.props.onLogout();
   }

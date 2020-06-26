@@ -5,8 +5,27 @@ import axios from "../../axios-orders";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import * as actions from "../../store/actions/index";
 import Spinner from "../../components/UI/Spinner/Spinner";
+import { Dispatch, AnyAction } from "redux";
+import { AppState } from "../../store";
 
-class Orders extends Component {
+interface OwnProps {
+  loading: boolean;
+  orders: any;
+}
+interface StateProps {
+  token: string;
+  userId: string;
+}
+interface DispatchProps {
+  onFetchOrder: (token: string, userId: string) => AnyAction;
+  onArchiveOrder: (id: string, token: string) => AnyAction;
+}
+type Props = OwnProps & StateProps & DispatchProps;
+interface State {
+  showOrders: boolean;
+}
+
+class Orders extends Component<Props, State> {
   state = {
     showOrders: false,
   };
@@ -16,13 +35,13 @@ class Orders extends Component {
   }
 
   showOrdersHandler = () => {
-    this.setState({ showOrders: (this.showOrders = !this.showOrders) });
+    this.setState({ showOrders: !this.state.showOrders });
   };
 
   render() {
     let orders = <Spinner />;
 
-    const orderFunction = (order) => {
+    const orderFunction = (order: any) => {
       return (
         <Order
           key={order.id}
@@ -47,14 +66,14 @@ class Orders extends Component {
             onClick={this.showOrdersHandler}
           />
           {!this.state.showOrders
-            ? ordersArr.reduce((acc, cur) => {
+            ? ordersArr.reduce((acc: any, cur: any) => {
                 if (cur.archive !== undefined && !cur.archive)
                   acc.push(orderFunction(cur));
                 return acc;
               }, [])
             : // .filter((order) => order.archive === false)
               // .map((order) => orderFunction(order))
-              ordersArr.map((order) => orderFunction(order))}
+              ordersArr.map((order: any) => orderFunction(order))}
         </div>
       );
     }
@@ -62,7 +81,7 @@ class Orders extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: AppState) => {
   return {
     orders: state.order.orders,
     loading: state.order.loading,
@@ -70,12 +89,12 @@ const mapStateToProps = (state) => {
     userId: state.auth.userId,
   };
 };
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
   return {
-    onFetchOrder: (token, userId) =>
-      dispatch(actions.fetchOrders(token, userId)),
-    onArchiveOrder: (orderId, token) =>
-      dispatch(actions.archiveOrder(orderId, token)),
+    onFetchOrder: (token: string, userId: string) =>
+      dispatch<any>(actions.fetchOrders(token, userId)),
+    onArchiveOrder: (orderId: string, token: string) =>
+      dispatch<any>(actions.archiveOrder(orderId, token)),
   };
 };
 export default connect(
