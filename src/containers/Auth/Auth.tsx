@@ -10,10 +10,14 @@ import Spinner from "../../components/UI/Spinner/Spinner";
 import { updateObject, checkValidity } from "../../shared/utility";
 import { Dispatch, AnyAction } from "redux";
 import { AppState } from "../../store";
+import { Formik, Form, Field, FormikErrors, ErrorMessage } from "formik";
 
 interface OwnProps {
   buildingBurger: React.ReactNode;
-  authRedirectPath: React.ReactNode;
+  authRedirectPath: string;
+  loading: boolean;
+  error: any;
+  isAuthenticated: boolean;
 }
 interface StateProps {}
 interface DispatchProps {
@@ -22,103 +26,25 @@ interface DispatchProps {
 }
 type Props = OwnProps & StateProps & DispatchProps;
 interface State {
-  controls: {
-    email: {
-      elementType: string;
-      elementConfig: {
-        type: string;
-        placeholder: string;
-      };
-      value: string;
-      validation: {
-        required: boolean;
-        isEmail: boolean;
-      };
-      valid: boolean;
-      touched: boolean;
-    };
-    password: {
-      elementType: string;
-      elementConfig: {
-        type: string;
-        placeholder: string;
-      };
-      value: string;
-      validation: {
-        required: boolean;
-        minLength: number;
-      };
-      valid: boolean;
-      touched: boolean;
-    };
-  };
   isSignup: boolean;
 }
 
-class Auth extends Component<Props, State> {
-  state = {
-    controls: {
-      email: {
-        elementType: "input",
-        elementConfig: {
-          type: "email",
-          placeholder: "Mail Address",
-        },
-        value: "",
-        validation: {
-          required: true,
-          isEmail: true,
-        },
-        valid: false,
-        touched: false,
-      },
-      password: {
-        elementType: "input",
-        elementConfig: {
-          type: "password",
-          placeholder: "Password",
-        },
-        value: "",
-        validation: {
-          required: true,
-          minLength: 6,
-        },
-        valid: false,
-        touched: false,
-      },
-    },
-    isSignup: true,
-  };
+interface FormValues {
+  email: string;
+  password: string;
+  verifyPassword: string;
+}
 
+class Auth extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = { isSignup: false };
+  }
   componentDidMount() {
     if (!this.props.buildingBurger && this.props.authRedirectPath !== "/") {
       this.props.onSetAuthRedirectPath();
     }
   }
-
-  inputChangedHandler = (event, controlName) => {
-    const updatedControls = updateObject(this.state.controls, {
-      [controlName]: updateObject(this.state.controls[controlName], {
-        value: event.target.value,
-        valid: checkValidity(
-          event.target.value,
-          this.state.controls[controlName].validation
-        ),
-        touched: true,
-      }),
-    });
-
-    this.setState({ controls: updatedControls });
-  };
-
-  submitHandler = (event) => {
-    event.preventDefault();
-    this.props.onAuth(
-      this.state.controls.email.value,
-      this.state.controls.password.value,
-      this.state.isSignup
-    );
-  };
 
   switchAuthModeHandler = () => {
     this.setState((prevState) => {
@@ -126,37 +52,30 @@ class Auth extends Component<Props, State> {
     });
   };
 
+  validateForm = (values: FormValues) => {
+    const errors: FormikErrors<FormValues> = {};
+    if (!checkValidity(values.email, { isEmail: true })) {
+      errors["email"] = "Invalid email address";
+    }
+
+    if (!checkValidity(values.password, { minLength: 5 })) {
+      errors["password"] = "Password is not long enough";
+    }
+
+    if (this.state.isSignup && values.password !== values.verifyPassword) {
+      errors["verifyPassword"] = "Passwords do not match";
+    }
+
+    return errors;
+  };
+
+  submitForm = (values: FormValues) => {
+    const { isSignup } = this.state;
+    this.props.onAuth(values.email, values.password, isSignup);
+  };
+
   render() {
-    const formElementsArray = [];
-    for (let key in this.state.controls) {
-      formElementsArray.push({
-        id: key,
-        config: this.state.controls[key],
-      });
-    }
-
-    let form = formElementsArray.map((formElement) => (
-      <Input
-        key={formElement.id}
-        elementType={formElement.config.elementType}
-        elementConfig={formElement.config.elementConfig}
-        value={formElement.config.value}
-        invalid={!formElement.config.valid}
-        shouldValidate={formElement.config.validation}
-        touched={formElement.config.touched}
-        changed={(event) => this.inputChangedHandler(event, formElement.id)}
-      />
-    ));
-    if (this.props.loading) {
-      form = <Spinner />;
-    }
-
-    let errorMessage = null;
-
-    if (this.props.error) {
-      errorMessage = <p>{this.props.error.message}</p>;
-    }
-
+    const { isSignup } = this.state;
     let authRedirect = null;
     if (this.props.isAuthenticated) {
       authRedirect = <Redirect to={this.props.authRedirectPath} />;
@@ -165,13 +84,60 @@ class Auth extends Component<Props, State> {
     return (
       <div className={classes.Auth}>
         {authRedirect}
-        {errorMessage}
-        <form onSubmit={this.submitHandler}>
-          {form}
-          <Button btnType="Success">SUBMIT</Button>
-        </form>
+        <Formik
+          initialValues={{ email: "", password: "", verifyPassword: "" }}
+          validate={this.validateForm}
+          onSubmit={this.submitForm}
+          validateOnChange={true}
+        >
+          {({ isSubmitting }) => (
+            <Form>
+              <Field
+                type="email"
+                name="email"
+                placeholder="Email Address"
+                style={{
+                  width: "100%",
+                  padding: "10px",
+                  boxSizing: "border-box",
+                }}
+              />
+              <ErrorMessage name="email" component="div" />
+              <Field
+                type="password"
+                name="password"
+                placeholder="Password"
+                style={{
+                  width: "100%",
+                  padding: "10px",
+                  boxSizing: "border-box",
+                }}
+              />
+              <ErrorMessage name="password" component="div" />
+              {isSignup && (
+                <>
+                  <Field
+                    type="password"
+                    name="verifyPassword"
+                    placeholder="Verify Password"
+                    style={{
+                      width: "100%",
+                      padding: "10px",
+                      boxSizing: "border-box",
+                    }}
+                  />
+                  <ErrorMessage name="verifyPassword" component="div" />
+                </>
+              )}
+
+              <Button btnType="Success" type="submit" disabled={isSubmitting}>
+                SUBMIT
+              </Button>
+            </Form>
+          )}
+        </Formik>
         <Button clicked={this.switchAuthModeHandler} btnType="Danger">
-          SWITCH TO {this.state.isSignup ? "SIGNIN" : "SIGNUP"}
+          SWITCH TO {isSignup ? "SIGNIN" : "SIGNUP"}
         </Button>
       </div>
     );

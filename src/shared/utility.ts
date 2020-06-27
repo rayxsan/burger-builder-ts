@@ -5,7 +5,18 @@ export const updateObject = <T, U>(oldObject: T, updatedProperties: U) => {
   };
 };
 
-export const checkValidity = (value: any, rules: any): boolean => {
+export interface ValidationRules {
+  required?: boolean;
+  minLength?: number;
+  maxLength?: number;
+  isEmail?: boolean;
+  isNumeric?: boolean;
+}
+
+export const checkValidity = (
+  value: string,
+  rules: ValidationRules
+): boolean => {
   let isValid = true;
   if (!rules) {
     return true;
