@@ -2,12 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 
-import Input from "../../components/UI/Input/Input";
 import Button from "../../components/UI/Button/Button";
 import classes from "./Auth.module.css";
 import * as actions from "../../store/actions/index";
-import Spinner from "../../components/UI/Spinner/Spinner";
-import { updateObject, checkValidity } from "../../shared/utility";
+import { checkValidity } from "../../shared/utility";
 import { Dispatch, AnyAction } from "redux";
 import { AppState } from "../../store";
 import { Formik, Form, Field, FormikErrors, ErrorMessage } from "formik";

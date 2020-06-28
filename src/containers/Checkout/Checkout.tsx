@@ -1,11 +1,20 @@
 import React, { Component } from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Route, Redirect, RouteComponentProps } from "react-router-dom";
 import { connect } from "react-redux";
 
 import CheckoutSummary from "../../components/Order/CheckoutSummary/CheckoutSummary";
 import ContactData from "./ContactData/ContactData";
+import { AppState } from "../../store";
 
-class Checkout extends Component {
+interface OwnProps extends RouteComponentProps {}
+interface StateProps {
+  ings: { [key: string]: number };
+  purchased: boolean;
+}
+
+type Props = OwnProps & StateProps;
+
+class Checkout extends Component<Props> {
   checkoutCancelledHandler = () => {
     this.props.history.goBack();
   };
@@ -39,7 +48,7 @@ class Checkout extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: AppState) => {
   return {
     ings: state.burgerBuilder.ingredients,
     purchased: state.order.purchased,

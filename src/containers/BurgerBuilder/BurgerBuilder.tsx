@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import Aux from "../../hoc/Aux/Aux";
 import Burger from "../../components/Burger/Burger";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Modal from "../../components/UI/Modal/Modal";
@@ -11,23 +10,22 @@ import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import axios from "../../axios-orders";
 import { Dispatch, AnyAction } from "redux";
 import { AppState } from "../../store";
+import { RouteComponentProps } from "react-router-dom";
 
 import * as actions from "../../store/actions/index";
 
-interface OwnProps {
+interface OwnProps extends RouteComponentProps {}
+interface StateProps {
   ings: {
     [key: string]: number;
   };
   price: number;
-  history: any;
   error: boolean;
-  onIngredientAdded: boolean;
-  onIngredientRemoved: boolean;
-}
-interface StateProps {
   isAuthenticated: boolean;
 }
 interface DispatchProps {
+  onIngredientAdded: (ingredientName: string) => AnyAction;
+  onIngredientRemoved: (ingredientName: string) => AnyAction;
   onInitIngredients: () => AnyAction;
   onSetAuthRedirectPath: (path: string) => AnyAction;
   onInitPurchase: () => AnyAction;
@@ -40,9 +38,10 @@ interface State {
 }
 
 export class BurgerBuilder extends Component<Props, State> {
-  state = {
-    purchasing: false,
-  };
+  constructor(props: Props) {
+    super(props);
+    this.state = { purchasing: false };
+  }
 
   componentDidMount() {
     this.props.onInitIngredients();
@@ -73,20 +72,19 @@ export class BurgerBuilder extends Component<Props, State> {
   };
 
   purchaseContinueHandler = () => {
-    console.log("history: ", this.props.history);
     this.props.onInitPurchase();
     this.props.history.push("/checkout");
   };
 
   render() {
-    const disabledInfo = {
-      ...this.props.ings,
-    };
-    let isDisabled = true;
+    const { ings } = this.props;
+    // from the obj containing the ingredient names and their quantity
+    // build another obj that indicates if an ingredient is not in the order
+    // example: {meet: 1, salad: 0} -> {meet: false, salad: true}
+    const disabledIngredients = Object.keys(ings).reduce((acc, key) => {
+      return { ...acc, [key]: ings[key] <= 0 ? true : false };
+    }, {});
 
-    for (let key in disabledInfo) {
-      isDisabled = disabledInfo[key] <= 0;
-    }
     let orderSummary = null;
     let burger = this.props.error ? (
       <p>Ingredients can't be loaded!</p>
@@ -96,18 +94,18 @@ export class BurgerBuilder extends Component<Props, State> {
 
     if (this.props.ings) {
       burger = (
-        <Aux>
+        <>
           <Burger ingredients={this.props.ings} />
           <BuildControls
             ingredientAdded={this.props.onIngredientAdded}
             ingredientRemoved={this.props.onIngredientRemoved}
-            disabled={isDisabled}
+            disabled={disabledIngredients}
             purchasable={this.updatePurchaseState(this.props.ings)}
             ordered={this.purchaseHandler}
             isAuth={this.props.isAuthenticated}
             price={this.props.price}
           />
-        </Aux>
+        </>
       );
       orderSummary = (
         <OrderSummary
@@ -121,7 +119,7 @@ export class BurgerBuilder extends Component<Props, State> {
 
     // {salad: true, meat: false, ...}
     return (
-      <Aux>
+      <>
         <Modal
           show={this.state.purchasing}
           modalClosed={this.purchaseCancelHandler}
@@ -129,7 +127,7 @@ export class BurgerBuilder extends Component<Props, State> {
           {orderSummary}
         </Modal>
         {burger}
-      </Aux>
+      </>
     );
   }
 }
@@ -145,10 +143,10 @@ const mapStateToProps = (state: AppState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
   return {
-    onIngredientAdded: (ingName: string) =>
-      dispatch(actions.addIngredient(ingName)),
-    onIngredientRemoved: (ingName: string) =>
-      dispatch(actions.removeIngredient(ingName)),
+    onIngredientAdded: (ingredientName: string) =>
+      dispatch(actions.addIngredient(ingredientName)),
+    onIngredientRemoved: (ingredientName: string) =>
+      dispatch(actions.removeIngredient(ingredientName)),
     onInitIngredients: () => dispatch<any>(actions.initIngredients()),
     onInitPurchase: () => dispatch(actions.purchaseInit()),
     onSetAuthRedirectPath: (path: string) =>

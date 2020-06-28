@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from "react";
 
-import Aux from "../../../hoc/Aux/Aux";
 import Button from "../../UI/Button/Button";
 
 interface Props {
@@ -25,7 +24,7 @@ const OrderSummary: FunctionComponent<Props> = (props) => {
   });
 
   return (
-    <Aux>
+    <>
       <h3>Your Order</h3>
       <p>A delicious burger with the following ingredients:</p>
       <ul>{ingredientSummary}</ul>
@@ -39,7 +38,7 @@ const OrderSummary: FunctionComponent<Props> = (props) => {
       <Button btnType="Success" clicked={props.purchaseContinued}>
         CONTINUE
       </Button>
-    </Aux>
+    </>
   );
 };
 

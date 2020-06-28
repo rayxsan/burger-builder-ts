@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 
 import classes from "./BuildControls.module.css";
 import BuildControl from "./BuildControl/BuildControl";
-import { addIngredient } from "../../../store/actions";
+import { AnyAction } from "redux";
 
 const controls = [
   { label: "Salad", type: "salad" },
@@ -11,18 +11,17 @@ const controls = [
   { label: "Meat", type: "meat" },
 ];
 
-//TODO: Fix less button (disable when there is no ingredients) and types in ingredientAdded & ingredientRemoved
 interface Props {
   price: number;
-  ingredientAdded: any;
-  ingredientRemoved: any;
-  disabled: any;
+  ingredientAdded: (type: string) => AnyAction;
+  ingredientRemoved: (type: string) => AnyAction;
+  disabled: { [ingredientName: string]: boolean };
   purchasable: boolean;
   ordered: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   isAuth: boolean;
 }
 
-const buildControls: FunctionComponent<Props> = (props) => {
+const BuildControls: FunctionComponent<Props> = (props) => {
   return (
     <div className={classes.BuildControls}>
       <p>
@@ -48,4 +47,4 @@ const buildControls: FunctionComponent<Props> = (props) => {
   );
 };
 
-export default buildControls;
+export default BuildControls;

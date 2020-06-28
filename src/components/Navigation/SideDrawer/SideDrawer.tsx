@@ -4,7 +4,6 @@ import Logo from "../../Logo/Logo";
 import NavigationItems from "../NavigationItems/NavigationItems";
 import classes from "./SideDrawer.module.css";
 import Backdrop from "../../UI/Backdrop/Backdrop";
-import Aux from "../../../hoc/Aux/Aux";
 
 interface Props {
   open: boolean;
@@ -18,7 +17,7 @@ const sideDrawer: FunctionComponent<Props> = (props) => {
     attachedClasses = [classes.SideDrawer, classes.Open];
   }
   return (
-    <Aux>
+    <>
       <Backdrop show={props.open} clicked={props.closed} />
       <div className={attachedClasses.join(" ")} onClick={props.closed}>
         <div className={classes.Logo}>
@@ -28,7 +27,7 @@ const sideDrawer: FunctionComponent<Props> = (props) => {
           <NavigationItems isAuthenticated={props.isAuth} />
         </nav>
       </div>
-    </Aux>
+    </>
   );
 };
 
