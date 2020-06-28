@@ -53,8 +53,6 @@ class Auth extends Component<Props, State> {
     });
   };
 
-  inputClasses = [classes.InputElement];
-
   validateForm = (values: FormValues) => {
     const errors: FormikErrors<FormValues> = {};
     if (!checkValidity(values.email, { isEmail: true })) {
@@ -83,7 +81,7 @@ class Auth extends Component<Props, State> {
     if (this.props.isAuthenticated) {
       authRedirect = <Redirect to={this.props.authRedirectPath} />;
     }
-
+    const inputClasses = [classes.InputElement];
     return (
       <div className={classes.Auth}>
         {authRedirect}
@@ -96,7 +94,7 @@ class Auth extends Component<Props, State> {
           {({ isSubmitting, dirty, isValid }) => (
             <Form>
               <Field
-                className={this.inputClasses.join(" ")}
+                className={inputClasses.join(" ")}
                 type="email"
                 name="email"
                 placeholder="Email Address"
