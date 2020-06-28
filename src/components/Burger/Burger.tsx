@@ -1,12 +1,12 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 
 import classes from "./Burger.module.css";
 import BurgerIngredient from "./BurgerIngredient/BurgerIngredient";
 
-interface burgerProps {
+interface Props {
   ingredients: { [key: string]: number };
 }
-const burger = (props: burgerProps) => {
+const burger: FunctionComponent<Props> = (props) => {
   let transformedIngredients: JSX.Element[] | JSX.Element;
 
   transformedIngredients = Object.keys(props.ingredients)
@@ -19,7 +19,7 @@ const burger = (props: burgerProps) => {
       return arr.concat(el);
     }, []);
 
-  if (transformedIngredients.length === 0) {
+  if (transformedIngredients.length <= 0) {
     transformedIngredients = <p>Please start adding ingredients!</p>;
   }
   return (

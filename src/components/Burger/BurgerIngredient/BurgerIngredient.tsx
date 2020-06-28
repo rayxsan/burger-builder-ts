@@ -1,11 +1,11 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import classes from "./BurgerIngredient.module.css";
 
 interface Props {
   type: string;
 }
-const BurgerIngredient = (props: Props) => {
-  let ingredient: JSX.Element | null;
+const BurgerIngredient: FunctionComponent<Props> = (props) => {
+  let ingredient: JSX.Element;
 
   switch (props.type) {
     case "bread-bottom":
@@ -32,7 +32,7 @@ const BurgerIngredient = (props: Props) => {
       ingredient = <div className={classes.Salad}></div>;
       break;
     default:
-      ingredient = null;
+      ingredient = <></>;
   }
 
   return ingredient;

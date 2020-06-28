@@ -40,6 +40,7 @@ class Auth extends Component<Props, State> {
     super(props);
     this.state = { isSignup: false };
   }
+
   componentDidMount() {
     if (!this.props.buildingBurger && this.props.authRedirectPath !== "/") {
       this.props.onSetAuthRedirectPath();
@@ -51,6 +52,8 @@ class Auth extends Component<Props, State> {
       return { isSignup: !prevState.isSignup };
     });
   };
+
+  inputClasses = [classes.InputElement];
 
   validateForm = (values: FormValues) => {
     const errors: FormikErrors<FormValues> = {};
@@ -90,47 +93,51 @@ class Auth extends Component<Props, State> {
           onSubmit={this.submitForm}
           validateOnChange={true}
         >
-          {({ isSubmitting }) => (
+          {({ isSubmitting, dirty, isValid }) => (
             <Form>
               <Field
+                className={this.inputClasses.join(" ")}
                 type="email"
                 name="email"
                 placeholder="Email Address"
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  boxSizing: "border-box",
-                }}
               />
-              <ErrorMessage name="email" component="div" />
+              <ErrorMessage
+                className={classes.ValidationError}
+                name="email"
+                component="div"
+              />
               <Field
+                className={[classes.InputElement].join(" ")}
                 type="password"
                 name="password"
                 placeholder="Password"
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  boxSizing: "border-box",
-                }}
               />
-              <ErrorMessage name="password" component="div" />
+              <ErrorMessage
+                className={classes.ValidationError}
+                name="password"
+                component="div"
+              />
               {isSignup && (
                 <>
                   <Field
+                    className={[classes.InputElement].join(" ")}
                     type="password"
                     name="verifyPassword"
                     placeholder="Verify Password"
-                    style={{
-                      width: "100%",
-                      padding: "10px",
-                      boxSizing: "border-box",
-                    }}
                   />
-                  <ErrorMessage name="verifyPassword" component="div" />
+                  <ErrorMessage
+                    className={classes.ValidationError}
+                    name="verifyPassword"
+                    component="div"
+                  />
                 </>
               )}
 
-              <Button btnType="Success" type="submit" disabled={isSubmitting}>
+              <Button
+                btnType="Success"
+                type="submit"
+                disabled={isSubmitting || !dirty || !isValid}
+              >
                 SUBMIT
               </Button>
             </Form>
