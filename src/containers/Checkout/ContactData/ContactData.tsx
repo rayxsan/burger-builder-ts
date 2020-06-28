@@ -84,8 +84,9 @@ class ContactData extends Component<Props> {
     };
     this.props.onOrderBurger(order, this.props.token);
   };
-
   render() {
+    const inputClasses = [classes.InputElement];
+
     return (
       <div className={classes.ContactData}>
         <Formik
@@ -101,24 +102,73 @@ class ContactData extends Component<Props> {
           onSubmit={this.submitForm}
           validateOnChange={true}
         >
-          {({ isSubmitting }) => (
+          {({ isSubmitting, dirty, isValid }) => (
             <Form>
-              <Field name="name" placeholder="Your Name" />
-              <ErrorMessage name="name" component="div" />
-              <Field name="street" placeholder="Your Address" />
-              <ErrorMessage name="street" component="div" />
-              <Field name="zipCode" placeholder="Your Zip Code" />
-              <ErrorMessage name="zipCode" component="div" />
-              <Field name="country" placeholder="Your Country" />
-              <ErrorMessage name="country" component="div" />
-              <Field type="email" name="email" placeholder="Your Email" />
-              <ErrorMessage name="email" component="div" />
-              <Field name="deliveryMethod" component="select">
+              <Field
+                className={inputClasses.join(" ")}
+                name="name"
+                placeholder="Your Name"
+              />
+              <ErrorMessage
+                className={classes.ValidationError}
+                name="name"
+                component="div"
+              />
+              <Field
+                className={inputClasses.join(" ")}
+                name="street"
+                placeholder="Your Address"
+              />
+              <ErrorMessage
+                className={classes.ValidationError}
+                name="street"
+                component="div"
+              />
+              <Field
+                className={inputClasses.join(" ")}
+                name="zipCode"
+                placeholder="Your Zip Code"
+              />
+              <ErrorMessage
+                className={classes.ValidationError}
+                name="zipCode"
+                component="div"
+              />
+              <Field
+                className={inputClasses.join(" ")}
+                name="country"
+                placeholder="Your Country"
+              />
+              <ErrorMessage
+                className={classes.ValidationError}
+                name="country"
+                component="div"
+              />
+              <Field
+                className={inputClasses.join(" ")}
+                type="email"
+                name="email"
+                placeholder="Your Email"
+              />
+              <ErrorMessage
+                className={classes.ValidationError}
+                name="email"
+                component="div"
+              />
+              <Field
+                className={inputClasses.join(" ")}
+                name="deliveryMethod"
+                component="select"
+              >
                 <option value="fastest">Fastest</option>
                 <option value="cheapest">Cheapest</option>
               </Field>
 
-              <Button btnType="Success" type="submit" disabled={isSubmitting}>
+              <Button
+                btnType="Success"
+                type="submit"
+                disabled={isSubmitting || !dirty || !isValid}
+              >
                 ORDER
               </Button>
             </Form>
